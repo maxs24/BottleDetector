@@ -90,7 +90,9 @@ if __name__ == '__main__':
     with open("Resources/coco.names.txt") as file:
         classes = file.read().split("\n")
 
-    classes_to_look_for = classes
+
+
+    classes_to_look_for = ['bottle']
 
     cam = cv2.VideoCapture(CAM_PORT)
 
