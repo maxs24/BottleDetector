@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import numpy as np
 
@@ -16,22 +18,36 @@ def draw_object_bounding_box(image_to_process, index, box):
 
 
 def draw_centr_coords(x, y, poc_image):
-    start = (10, 120)
-    font_size = 0.1
+    start = (20, 20)
+    font_size = 0.6
     font = cv2.FONT_HERSHEY_SIMPLEX
     width = 3
     text = "Centr Coords: (" + str(x) + ',' + str(y) + ')'
-    white_color = (255, 255, 255)
+    color = (0, 255, 0)
 
     black_outline_color = (0, 0, 0)
     final_image = cv2.putText(poc_image, text, start, font, font_size,
                               black_outline_color, width * 3, cv2.LINE_AA)
     final_image = cv2.putText(final_image, text, start, font, font_size,
-                              white_color, width, cv2.LINE_AA)
+                              color, width, cv2.LINE_AA)
 
     return final_image
 
+def draw_fps(poc_image, fps):
 
+    start = (20, 40)
+    font_size = 0.6
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    width = 3
+    text = "FPS: " + str(fps)
+    color = (0, 255, 0)
+    black_outline_color = (0, 0, 0)
+
+    final_image = cv2.putText(poc_image, text, start, font, font_size,
+                              black_outline_color, width * 3, cv2.LINE_AA)
+    final_image = cv2.putText(final_image, text, start, font, font_size,
+                              color, width, cv2.LINE_AA)
+    return final_image
 
 def apply_yolo_object_detection(image_to_process):
     height, width, _ = image_to_process.shape
@@ -90,15 +106,19 @@ if __name__ == '__main__':
     with open("Resources/coco.names.txt") as file:
         classes = file.read().split("\n")
 
-
-
     classes_to_look_for = ['bottle']
 
     cam = cv2.VideoCapture(CAM_PORT)
 
+    new_frame_time = 0
+    prev_frame_time = 0
     while True:
         result, image = cam.read()
+        new_frame_time = time.time()
         res_image = start_image_object_detection(image)
+        fps = 1/(new_frame_time - prev_frame_time)
+        prev_frame_time = new_frame_time
+        res_image = draw_fps(res_image, int(fps))
         cv2.imshow("camera", res_image)
         if cv2.waitKey(10) == 27:  # Клавиша Esc
             break
