@@ -10,15 +10,27 @@ def draw_object_bounding_box(image_to_process, index, box):
     width = 2
     final_image = cv2.rectangle(image_to_process, start, end, color, width)
 
-    start = (x, y - 10)
-    font_size = 1
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    width = 2
-    text = classes[index]
-    final_image = cv2.putText(final_image, text, start, font,
-                              font_size, color, width, cv2.LINE_AA)
+    draw_centr_coords((x+w)/2, (y + h)/2, final_image)
 
     return final_image
+
+
+def draw_centr_coords(x, y, poc_image):
+    start = (10, 120)
+    font_size = 1.5
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    width = 3
+    text = "Centr Coords: (" + str(x) + ',' + str(y) + ')'
+    white_color = (255, 255, 255)
+
+    black_outline_color = (0, 0, 0)
+    final_image = cv2.putText(poc_image, text, start, font, font_size,
+                              black_outline_color, width * 3, cv2.LINE_AA)
+    final_image = cv2.putText(final_image, text, start, font, font_size,
+                              white_color, width, cv2.LINE_AA)
+
+    return final_image
+
 
 
 def apply_yolo_object_detection(image_to_process):
@@ -78,13 +90,7 @@ if __name__ == '__main__':
     with open("Resources/coco.names.txt") as file:
         classes = file.read().split("\n")
 
-    look_for = input("What we are looking for: ").split(',')
-
-    list_look_for = []
-    for look in look_for:
-        list_look_for.append(look.strip())
-
-    classes_to_look_for = list_look_for
+    classes_to_look_for = classes
 
     cam = cv2.VideoCapture(CAM_PORT)
 
