@@ -17,7 +17,7 @@ def draw_object_bounding_box(image_to_process, index, box):
 
 def draw_centr_coords(x, y, poc_image):
     start = (10, 120)
-    font_size = 1.5
+    font_size = 0.1
     font = cv2.FONT_HERSHEY_SIMPLEX
     width = 3
     text = "Centr Coords: (" + str(x) + ',' + str(y) + ')'
