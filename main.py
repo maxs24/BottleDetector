@@ -25,13 +25,11 @@ def draw_centr_coords(x, y, poc_image):
     text = "Centr Coords: (" + str(x) + ',' + str(y) + ')'
     color = (0, 255, 0)
 
-    black_outline_color = (0, 0, 0)
     final_image = cv2.putText(poc_image, text, start, font, font_size,
-                              black_outline_color, width * 3, cv2.LINE_AA)
-    final_image = cv2.putText(final_image, text, start, font, font_size,
                               color, width, cv2.LINE_AA)
 
     return final_image
+
 
 def draw_fps(poc_image, fps):
 
@@ -41,11 +39,8 @@ def draw_fps(poc_image, fps):
     width = 3
     text = "FPS: " + str(fps)
     color = (0, 255, 0)
-    black_outline_color = (0, 0, 0)
 
     final_image = cv2.putText(poc_image, text, start, font, font_size,
-                              black_outline_color, width * 3, cv2.LINE_AA)
-    final_image = cv2.putText(final_image, text, start, font, font_size,
                               color, width, cv2.LINE_AA)
     return final_image
 
@@ -76,7 +71,6 @@ def apply_yolo_object_detection(image_to_process):
 
     chosen_boxes = cv2.dnn.NMSBoxes(boxes, class_scores, 0.0, 0.4)
     for box_index in chosen_boxes:
-        box_index = box_index
         box = boxes[box_index]
         class_index = class_indexes[box_index]
 
